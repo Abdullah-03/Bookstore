@@ -1,0 +1,14 @@
+h1 {
+    color: dimgray;
+}
+
+body {
+    min-height: 75rem;
+    padding-top: 4.5rem;
+}
+
+
+.bookcover {
+    height: 300px;
+    width: auto;
+}
