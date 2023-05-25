@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+<form hx-post="{% url 'review_form' %}" hx-swap="outerHTML">
+    {% csrf_token %}
+    <p>Submit Your review</p>
+    {{ form|crispy }}
+    <input type="submit" value="Submit">
+</form>

@@ -37,3 +37,10 @@ class Review(models.Model):
 
     def __str__(self):
         return self.review
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['book', 'author'], name='unique_author_book_combination'
+            )
+        ]

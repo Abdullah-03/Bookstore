@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 Book Detail
@@ -15,7 +16,6 @@ Book Detail
 
     <div>
         <h3>Reviews</h3>
-        <ul>
         {% if book.reviews.all %}
             <ul>
             {% for review in book.reviews.all %}
@@ -26,8 +26,15 @@ Book Detail
         {% else %}
             <p>Be the <i>first</i> to leave a review! 😎</p>
         {% endif %}
+    </div>
 
-
+    <div>
+        <form hx-post="{% url 'review_form' book.id %}" hx-swap="outerHTML">
+            {% csrf_token %}
+            <p>Submit Your review</p>
+            {{ form|crispy }}
+            <input type="submit" value="Submit">
+        </form>
     </div>
 </div>
 {% endblock %}
