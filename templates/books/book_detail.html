@@ -16,18 +16,22 @@ Book Detail
 
     <div>
         <h3>Reviews</h3>
-        {% if book.reviews.all %}
-            <ul>
-            {% for review in book.reviews.all %}
-                <li>{{ review.review }} ({{ review.author }})</li>
-            {% endfor %}
-            </ul>
+        {% if not user_review %}
+        <div hx-get="{% url "get_user_review" %}" hx-trigger="new_review from:body" hx-swap="innerHTML">
+            <p>Read it? Tell others what you think! 😎</p>
+            <!-- user entered review will appear here.-->
+        </div>
+        {% endif %}
+        <br>
 
-        {% else %}
-            <p>Be the <i>first</i> to leave a review! 😎</p>
+        {% if book.reviews.all %}
+            {% for review in book.reviews.all %}
+                <p>{{ review.review }} ({{ review.author }})</p><br>
+            {% endfor %}
         {% endif %}
     </div>
 
+    {% if not user_review %}
     <div>
         <form hx-post="{% url 'review_form' book.id %}" hx-swap="outerHTML">
             {% csrf_token %}
@@ -36,5 +40,7 @@ Book Detail
             <input type="submit" value="Submit">
         </form>
     </div>
+    {% endif %}
+
 </div>
 {% endblock %}

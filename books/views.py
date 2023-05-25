@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.http import request
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
@@ -19,6 +21,12 @@ class BookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ReviewForm()
+        book = Book.objects.get(id=self.kwargs['pk'])
+        review = book.reviews.filter(author=self.request.user)
+        if review:
+            context["user_review"] = review
+        else:
+            context["user_review"] = None
         return context
 
 
@@ -30,7 +38,9 @@ def review_form(request, pk):
             review = Review(review=form.cleaned_data['review'], author=request.user, book=book)
             review.save()
             book.reviews.add(review)
-            return render(request, 'htmx/review_form_success.html')
+            res = render(request, 'htmx/review_form_success.html')
+            res.headers["HX-Trigger"] = "new_review"
+            return res
     else:
         form = ReviewForm()
 
@@ -38,4 +48,6 @@ def review_form(request, pk):
 
 
 def get_user_review(request):
-    pass
+    user = request.user
+    review = user.reviews.last()
+    return render(request, "htmx/user_review.html", {'review': review})

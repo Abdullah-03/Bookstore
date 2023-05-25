@@ -32,7 +32,8 @@ class Review(models.Model):
     review = models.CharField(max_length=225)
     author = models.ForeignKey(
         get_user_model(),
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="reviews"
     )
 
     def __str__(self):
