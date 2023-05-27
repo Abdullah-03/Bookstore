@@ -7,8 +7,20 @@ body {
     padding-top: 4.5rem;
 }
 
-
 .bookcover {
     height: 300px;
     width: auto;
+}
+
+.book_list_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.book_list_item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 30%;
 }
